@@ -1,6 +1,4 @@
-**Credit to Ricardo P for this script**
-
-Gets count of ALL findings for all available application profiles. Also includes latest scan names and dates.
+Gets ALL findings for an application profile.
 
 *Note*: This script requires Python 3!
 
@@ -8,11 +6,11 @@ Gets count of ALL findings for all available application profiles. Also includes
 
 Clone this repository:
 
-    git clone https://github.com/nbarhamvc/extractfindings
+    git clone https://github.com/cadonuno/extractallfindings
 
 Install dependencies:
 
-    cd extractfindings
+    cd extractallfindings
     pip install -r requirements.txt
 
 (Optional) Save Veracode API credentials in `~/.veracode/credentials`
@@ -25,20 +23,20 @@ Install dependencies:
 
 If you have saved credentials as above you can run:
 
-    py extract_finding_totals.py (arguments)
+    py extract_findings.py (arguments)
 
 Otherwise you will need to set environment variables:
 
     export VERACODE_API_KEY_ID=<YOUR_API_KEY_ID>
     export VERACODE_API_KEY_SECRET=<YOUR_API_KEY_SECRET>
-    py extract_finding_totals.py (arguments)
+    py extract_findings.py (arguments)
 
 Arguments supported include:
-- `-t`, `--target` - (mandatory) File to save results - must be .csv.
+- `-t`, `--target` - (mandatory) File to save results - must be .xlsx.
+- `-s`, `--sast` Set to enable fetching of SAST results.
 - `-d`, `--dast` Set to enable fetching of DAST results.
-- `-s`, `--sca` Set to enable fetching of SCA results.
-- `-c`, `--custom` Comma-delimited list of custom fields to fetch.
+- `-c`, `--sca` Set to enable fetching of SCA results.
 - `-v`, `--verbose` Set to enable verbose logging.
 
 ## Results
-The results will be saved to a .csv file.  
+The results will be saved to a .xlsx file.
