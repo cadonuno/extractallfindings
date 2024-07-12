@@ -1,4 +1,4 @@
-Gets ALL findings for an application profile.
+Gets all findings of the specified scan typesfor an application profile and saves them to a.
 
 *Note*: This script requires Python 3!
 
