@@ -9,6 +9,7 @@ import os.path
 from veracode_api_signing.plugin_requests import RequestsAuthPluginVeracodeHMAC
 from veracode_api_signing.credentials import get_credentials
 import xml.dom.minidom as xml
+import base64
 
 json_header = {
     "User-Agent": "Findings extractor",
@@ -116,6 +117,12 @@ def get_exploitability(cve_node):
             "percentile": cve_node['exploitability']['epss_percentile']
         }
 
+def try_decode(element):
+    try:
+        return base64.b64decode(element)
+    except Exception:
+        return element
+
 def write_row(worksheet, row, content):
     column = 1
     for value in content:
@@ -127,7 +134,7 @@ def save_sast(sast_findings, worksheet):
     row = 2
     for finding in sast_findings:
         write_row(worksheet, row, [
-                finding['issue_id'], finding['description'], finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+                finding['issue_id'], try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
                 finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], 
                 "CWE " + str(finding['finding_details']['cwe']['id']) + ": " + finding['finding_details']['cwe']['name'], finding['finding_details']['finding_category']['name'], 
                 finding['finding_details']['module'], finding['finding_details']['file_path'], finding['finding_details']['file_line_number'] 
@@ -139,7 +146,7 @@ def save_dast(dast_findings, worksheet):
     row = 2
     for finding in dast_findings:
         write_row(worksheet, row, [
-                finding['issue_id'], finding['description'], finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+                finding['issue_id'], try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
                 finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], 
                 "CWE " + str(finding['finding_details']['cwe']['id']) + ": " + finding['finding_details']['cwe']['name'], finding['finding_details']['finding_category']['name'], 
                 finding['finding_details']['url'], finding['finding_details']['attack_vector'], finding['finding_details']['vulnerable_parameter'] if 'vulnerable_parameter' in finding['finding_details'] else ''
@@ -152,7 +159,7 @@ def save_sca(sca_findings, worksheet):
     for finding in sca_findings:
         exploitability = get_exploitability(finding['finding_details']['cve'])
         write_row(worksheet, row, [finding['finding_details']['component_filename'], finding['finding_details']['version'],
-            finding['description'], finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+            try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
             finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], exploitability["score"], exploitability["percentile"],
             finding['finding_details']['cve']['name'], finding['finding_details']['cve']['cvss'], 
             finding['finding_details']['cve']['cvss3']['score']])
