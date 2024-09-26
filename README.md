@@ -1,4 +1,4 @@
-Gets all findings of the specified scan typesfor an application profile and saves them to a.
+Gets all findings of the specified scan types for an all applications saves them to a xlsx file.
 
 *Note*: This script requires Python 3!
 
