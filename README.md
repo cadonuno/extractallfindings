@@ -36,6 +36,7 @@ Arguments supported include:
 - `-s`, `--sast` Set to enable fetching of SAST results.
 - `-d`, `--dast` Set to enable fetching of DAST results.
 - `-c`, `--sca` Set to enable fetching of SCA results.
+- `-a`, `--application_guid` The application GUID to fetch results.
 - `-v`, `--verbose` Set to enable verbose logging.
 
 ## Results
