@@ -66,14 +66,14 @@ def get_findings_for_app_and_scan_type(application_guid, page, rest_api_base, sc
         print(f"Calling API at {path}")
 
     response = requests.get(path, auth=RequestsAuthPluginVeracodeHMAC(), headers=json_header)
-
-    body = response.json()
+    
     if verbose:
         print(f"status code {response.status_code}")
-        if body:
-            print(body)
     if response.status_code == 200:
         print(f"Successfully obtained {scan_type} findings page {page}")
+        body = response.json()
+        if verbose and body:
+            print(body)
         if "_embedded" in body and "findings" in body["_embedded"]:
             findings = body["_embedded"]["findings"]
             if has_more_pages(body):
@@ -147,13 +147,15 @@ def call_owasp_api(cwe_node, cwe_id, verbose):
 
     response = requests.get(path, auth=RequestsAuthPluginVeracodeHMAC(), headers=json_header)
 
-    body = response.json()
+    
     if verbose:
         print(f"status code {response.status_code}")
-        if body:
-            print(body)
+        
     if response.status_code == 200:
-        if "references":
+        body = response.json()
+        if verbose and body:
+            print(body)
+        if "references" in body:
             references = body["references"]
             for reference in references:
                 if reference["name"] == "OWASP":
