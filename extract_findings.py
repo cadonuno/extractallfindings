@@ -256,7 +256,7 @@ def main():
         parser.add_argument('-s', '--sast', action='store_true', help='Set to enable fetching of SAST results')
         parser.add_argument('-d', '--dast', action='store_true', help='Set to enable fetching of DAST results')
         parser.add_argument('-c', '--sca', action='store_true', help='Set to enable fetching of SCA results')
-        parser.add_argument('-a', '--application_guid', help='GUID of application to fetch')
+        parser.add_argument('-a', '--application_guid', help='The application GUID to fetch results')
         parser.add_argument('-v', '--verbose', action='store_true', help='Set to enable verbose logging')
 
         args = parser.parse_args()

@@ -1,4 +1,4 @@
-Gets all findings of the specified scan typesfor an application profile and saves them to a.
+Gets all findings of the specified scan types for an all applications saves them to a xlsx file.
 
 *Note*: This script requires Python 3!
 
@@ -36,6 +36,7 @@ Arguments supported include:
 - `-s`, `--sast` Set to enable fetching of SAST results.
 - `-d`, `--dast` Set to enable fetching of DAST results.
 - `-c`, `--sca` Set to enable fetching of SCA results.
+- `-a`, `--application_guid` The application GUID to fetch results.
 - `-v`, `--verbose` Set to enable verbose logging.
 
 ## Results
