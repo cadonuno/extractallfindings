@@ -182,16 +182,19 @@ def parse_owasp_info(finding_details, verbose):
     owasp_cache[cwe_id] = owasp_info
     return owasp_info
 
+def convert_to_yes_no(boolean_value):
+    return "Yes" if boolean_value else "No"
+
 def save_sast(sast_findings, worksheet, verbose):
     write_row(worksheet, 1, ["Issue ID", "Description", "Violates Policy?", "First Found Date", "Status", "Resolution", "Severity", "CWE", "Finding Category", "Module Name", "File Path", "Line", "Is New?", "Is OWASP?"])
     row = 2
     for finding in sast_findings:
         write_row(worksheet, row, [
-                finding['issue_id'], try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+                finding['issue_id'], try_decode(finding['description']), convert_to_yes_no(finding['violates_policy']), finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
                 finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], 
                 "CWE " + str(finding['finding_details']['cwe']['id']) + ": " + finding['finding_details']['cwe']['name'], finding['finding_details']['finding_category']['name'], 
                 finding['finding_details']['module'], finding['finding_details']['file_path'], finding['finding_details']['file_line_number'],
-                "Yes" if finding['finding_status']["new"] else "No", "Yes" if parse_owasp_info(finding['finding_details'], verbose) else "No"
+                convert_to_yes_no(finding['finding_status']["new"]), convert_to_yes_no(parse_owasp_info(finding['finding_details'], verbose))
             ])
         row+=1
 
@@ -200,11 +203,11 @@ def save_dast(dast_findings, worksheet, verbose):
     row = 2
     for finding in dast_findings:
         write_row(worksheet, row, [
-                finding['issue_id'], try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+                finding['issue_id'], try_decode(finding['description']), convert_to_yes_no(finding['violates_policy']), finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
                 finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], 
                 "CWE " + str(finding['finding_details']['cwe']['id']) + ": " + finding['finding_details']['cwe']['name'], finding['finding_details']['finding_category']['name'], 
                 finding['finding_details']['url'], finding['finding_details']['attack_vector'], finding['finding_details']['vulnerable_parameter'] if 'vulnerable_parameter' in finding['finding_details'] else '',
-                "Yes" if finding['finding_status']["new"] else "No", "Yes" if parse_owasp_info(finding['finding_details'], verbose) else "No"])
+                convert_to_yes_no(finding['finding_status']["new"]), convert_to_yes_no(parse_owasp_info(finding['finding_details'], verbose))])
         row+=1
 
 def save_sca(sca_findings, worksheet, verbose):
@@ -214,10 +217,10 @@ def save_sca(sca_findings, worksheet, verbose):
         exploitability = get_exploitability(finding['finding_details']['cve'])
 
         write_row(worksheet, row, [finding['finding_details']['component_filename'], finding['finding_details']['version'],
-            try_decode(finding['description']), finding['violates_policy'], finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
+            try_decode(finding['description']), convert_to_yes_no(finding['violates_policy']), finding['finding_status']['first_found_date'], finding['finding_status']['status'], 
             finding['finding_status']['resolution'], severity_map[finding['finding_details']['severity']], exploitability["score"], exploitability["percentile"],
             finding['finding_details']['cve']['name'], finding['finding_details']['cve']['cvss'], 
-            finding['finding_details']['cve']['cvss3']['score'], "Yes" if finding['finding_status']["new"] else "No", "Yes" if parse_owasp_info(finding['finding_details'], verbose) else "No"])
+            finding['finding_details']['cve']['cvss3']['score'], convert_to_yes_no(finding['finding_status']["new"]), convert_to_yes_no(parse_owasp_info(finding['finding_details'], verbose))])
         row+=1
 
 def save_to_excel(findings, file_name, verbose):
