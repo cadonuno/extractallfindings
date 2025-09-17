@@ -1,4 +1,4 @@
-Gets all findings of the specified scan types for an all applications saves them to a xlsx file.
+Gets all findings of the specified scan types for all applications and saves them to xlsx files.
 
 *Note*: This script requires Python 3!
 
@@ -40,4 +40,4 @@ Arguments supported include:
 - `-v`, `--verbose` Set to enable verbose logging.
 
 ## Results
-The results will be saved to a .xlsx file.
+The results will be saved to .xlsx files.
